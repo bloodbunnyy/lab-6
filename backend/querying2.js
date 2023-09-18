@@ -46,11 +46,30 @@ Employees.findOne({ include: [Companies] }).then(employee => {
 
 // Exercise 3
 // *** TODO: Insert code here ***
-
+.then(() => Employees.findOne({ where: { name: 'Peter Rabbit' }, 
+include: [Companies] })) 
+.then(employee => console.log(employee.company.dataValues))
 // Exercise 4
 // *** TODO: Insert code here ***
-
+.then(() => Companies.findOne({ order: [['profit', 'DESC']], include: [Employees] })) 
+.then(company => {
+  company.employees.forEach(employee => {
+    console.log(employee.dataValues);
+    console.log()
+  });
+})
 // Exercise 5
 // *** TODO: Insert code here ***  
+.then(()=>Companies.findOne({id:1}))
+.then(c => {
+  console.log("Inserting new employee to company ID=" + c.id);
+  const e3 = Employees.create({
+      name: 'Peter Junior',
+      age: 2,
+      // Here is how we link the employee to the company.
+      companyId: c.id
+  });
+  return e3
+})
 
 .catch(console.error).then(() => db.close());
